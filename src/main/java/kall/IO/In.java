@@ -144,7 +144,7 @@ public class In {
     }
 
     public boolean readData_v1_0(ArrayList<LinkedBlockingQueue<List<String>>> queueList) {
-        long time = System.currentTimeMillis();
+//        long time = System.currentTimeMillis();
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/dataTest.txt"));
             System.out.println("how many lines? --" + lines.size());
@@ -169,7 +169,7 @@ public class In {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("onLyRead:" + (System.currentTimeMillis() - time) + "ms");
+//        System.out.println("onLyRead:" + (System.currentTimeMillis() - time) + "ms");
         return true;
     }
 }

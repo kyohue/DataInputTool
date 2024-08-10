@@ -11,6 +11,10 @@ public class MyThreadPool extends ThreadPoolExecutor {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
     }
 
+    public MyThreadPool(int ThreadNum, ThreadFactory factory) {
+        super(ThreadNum, ThreadNum, 1, TimeUnit.MINUTES, new MyBlockingQueue<>(20), factory);
+    }
+
     @Override
     public void execute(Runnable command) {
         super.execute(wrap(command, clientTrace()));
@@ -32,13 +36,13 @@ public class MyThreadPool extends ThreadPoolExecutor {
             System.err.println(Thread.currentThread().getName() + " Exception.");
         } else {
             long duration = System.currentTimeMillis() - startTime.get();
+            System.out.println(Thread.currentThread().getName() + "-costTime:" + duration + "ms");
             totalTime.addAndGet(duration);
         }
         startTime.remove();
     }
 
     /**
-     *
      * @return 线程池所有任务串行累加耗时ms
      */
     public AtomicLong getPoolRunningTime() {
@@ -46,7 +50,6 @@ public class MyThreadPool extends ThreadPoolExecutor {
     }
 
     /**
-     *
      * @return 异常，调用该函数的栈信息会被记录到这个异常中
      */
     private Exception clientTrace() {
@@ -54,8 +57,7 @@ public class MyThreadPool extends ThreadPoolExecutor {
     }
 
     /**
-     *
-     * @param task 待执行的任务
+     * @param task        待执行的任务
      * @param clientStack 包含调用clientTrace函数的栈信息
      * @return 一个可执行任务
      */
